@@ -1,0 +1,19 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+
+<!-- button.html -->
+
+<button id="my-button" onclick="connect()">Click me!</button>
+
+<script>
+  // Import the Socket.IO library
+
+  const socket = io('http://127.0.0.1:5000')
+
+  // Listen for the button click event
+  function connect(){
+    console.log( "Click" )
+    // Emit a 'button-clicked' event to the server
+    socket.emit("button-clicked", "The button was clicked!");
+  };
+</script>
+
