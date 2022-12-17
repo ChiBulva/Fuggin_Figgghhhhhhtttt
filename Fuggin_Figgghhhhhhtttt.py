@@ -24,6 +24,7 @@ DEFAULT_ROLL_STRENGTH = 10
 DEFAULT_STRENGTH_POT = 6
 DEFAULT_HEALING_POT = 4
 
+"""
 # Load the video
 Waft_Success = './video/Waft_Success.mp4'
 Failed_Waft = './video/Failed_Waft.mp4'
@@ -55,7 +56,7 @@ Heal_7 = './video/Heal/7.mp4'
 Heal_8 = './video/Heal/8.mp4'
 Heal_9 = './video/Heal/9.mp4'
 Heal_10 = './video/Damage/10.mp4'
-
+"""
 Clown = './video/Clown.mp4'
 Taunt = './video/Taunt.mp4'
 
