@@ -1,6 +1,8 @@
 # Import the random module to use the randint() function
 import random
 
+from termcolor import colored
+
 # This function returns a random integer between 1 and 20, inclusive
 # It also adds the roll to a ledger of previous rolls
 def roll( sides ):
@@ -23,8 +25,19 @@ DEFAULT_ROLL_STRENGTH = 10
 
 DEFAULT_STRENGTH_POT = 6
 DEFAULT_HEALING_POT = 4
-
 """
+DEFAULT_STRENGTH_POT = 3
+DEFAULT_HEALING_POT = 4
+
+	0	1	2	3	4	5
+X4	7	11 	15 	19	21	25	29
+X3	9	12	15	18	21  24	27				
+
+	0	1	2	3	4	5	
+x5	7	12	17	22	27	32	37
+x4	11	15	19	23	27	31	35
+"""
+
 # Load the video
 Waft_Success = './video/Waft_Success.mp4'
 Failed_Waft = './video/Failed_Waft.mp4'
@@ -56,10 +69,10 @@ Heal_7 = './video/Heal/7.mp4'
 Heal_8 = './video/Heal/8.mp4'
 Heal_9 = './video/Heal/9.mp4'
 Heal_10 = './video/Damage/10.mp4'
+
 Clown = './video/Clown.mp4'
 Taunt = './video/Taunt.mp4'
 
-"""
 def Roll_Strength( current_roll, sides ):
     roll_strength = ( DEFAULT_ROLL_STRENGTH * current_roll ) / sides
     return roll_strength
@@ -408,7 +421,7 @@ class Creature:
         roll_strength = Roll_Strength( temp_roll, self.max_hit )
         other_creature.health -= temp_roll
         Clean_Message(f"{self.name} attacks {other_creature.name} and deals {temp_roll} damage")
-        attack_emote( self.name, other_creature.name, temp_roll )
+        attack_emote( self.name, other_creature.name, roll_strength, temp_roll )
 
     def make_noise(self):
         Clean_Message(f"{ self.name } the { self.species }:\t{self.noise}")
@@ -480,11 +493,13 @@ class Player:
     def buff_max_health(self, buff):
         # add some amount of health to the player's current health
         self.max_heal += buff
+        self.items.append( "Healing_Potion" )
         Clean_Message(f"{ self.name } has added { buff } to max heals its now { self.max_heal }")
 
     def buff_max_hit(self, buff):
         # add some amount of health to the player's current health
         self.max_hit += buff
+        self.items.append( "Strength_Potion" )
         Clean_Message(f"{ self.name } has buffed max hp by { buff } its now { self.max_hit }")
 
     def waft_sand(self, Target):
@@ -626,12 +641,18 @@ def Figgghhhhhttt( Champ, wins ):
         print( "|\tChamp:      " + str( Champ.name ) )
         player1 = Player( str( Champ.name ), Default_Health, Default_Hitpoints, Default_Healing)
         player1.add_wins( wins )
-    
+		
     # create two player objects
     player2 = input( "|\tChallenger: " )
     player2 = Player( str( player2 ), Default_Health, Default_Hitpoints, Default_Healing)
-
-    # game loop
+	
+	# Troll Event
+    #if( roll( 12 ) % 1 == 0 ):
+    #    Sean = Troll( "Sean The Troll", Deer( "Cameron the Deer" ) )
+    #    Sean.attack( player1 )
+    #    Sean.attack( player2 )		
+    
+	# game loop
     Round_Count = 1
     """
     print( "+++++++" )
@@ -686,6 +707,29 @@ def Game_Over( player1, player2 ):
 
     
     winner = player1
+    """
+    SPs = 0
+    HPs = 0
+    SP2s = 0
+    HP2s = 0
+    for item in player1.items:
+        if( item == "Strength_Potion" ):
+            SPs += 1
+        elif( item == "Health_Potion" ):
+            HPs += 1
+
+    for item in player2.items:
+        if( item == "Strength_Potion" ):
+            SP2s += 1
+        elif( item == "Health_Potion" ):
+            HP2s += 1
+    Clean_Message( str( player1.name ) + " had " + str( SPs ) + " Strength_Potions" )
+    Clean_Message( str( player1.name ) + " had " + str( HPs ) + " Health_Potions" )
+    Clean_Message( str( player2.name ) + " had " + str( SP2s ) + " Strength_Potions" )
+    Clean_Message( str( player2.name ) + " had " + str( HP2s ) + " Health_Potions" )
+    """
+	
+    #print( player2.items )
     if player2.health > player1.health:
         winner = player2
         message = "A New Champ is Crowned!!!"
