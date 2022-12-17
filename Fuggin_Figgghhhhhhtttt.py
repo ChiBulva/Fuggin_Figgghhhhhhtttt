@@ -1,8 +1,6 @@
 # Import the random module to use the randint() function
 import random
 
-from termcolor import colored
-
 # This function returns a random integer between 1 and 20, inclusive
 # It also adds the roll to a ledger of previous rolls
 def roll( sides ):
