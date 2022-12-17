@@ -56,10 +56,10 @@ Heal_7 = './video/Heal/7.mp4'
 Heal_8 = './video/Heal/8.mp4'
 Heal_9 = './video/Heal/9.mp4'
 Heal_10 = './video/Damage/10.mp4'
-"""
 Clown = './video/Clown.mp4'
 Taunt = './video/Taunt.mp4'
 
+"""
 def Roll_Strength( current_roll, sides ):
     roll_strength = ( DEFAULT_ROLL_STRENGTH * current_roll ) / sides
     return roll_strength
