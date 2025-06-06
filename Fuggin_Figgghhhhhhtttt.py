@@ -1252,21 +1252,12 @@ def Main_Menu(  ):
         print( "|                                               |" )
         print( "|  Hey Feller! Where would you like to go...    |" )
         print( "|                                               |" )
-        print( "|      a = adventure                            |" )
         print( "|      f = fight                                |" )
         print( "|      e = exit                                 |" )
         print( "|                                               |" )
     #    print( "    s = settings" ) # Edits a JSON FILE
         Game = input( "| :" )
-        if( Game == "a" ):
-
-            print( "\\_______________________________________________/" )
-            print(  )
-            print(  )
-            Adventure(  )
-            print( "  ______________________________________________" )
-            print( " /                                              \\ " )
-        elif( Game == "f" ):
+        if( Game == "f" ):
 
             print( "\\_______________________________________________/" )
             print(  )
@@ -1287,7 +1278,7 @@ def Main_Menu(  ):
                 print( "| | !!! Please try again...         !!! |       |" )
                 
             elif( err_cnt == 2 ):
-                print( "| | !!! It's only like 3 things...  !!! |       |")
+                print( "| | !!! It's only like 2 things...  !!! |       |")
                 print( "| | !!! It's not very hard...       !!! |       |" )
                 print( "| | !!! Try again...                !!! |       |" )
             elif( err_cnt == 3 ):
