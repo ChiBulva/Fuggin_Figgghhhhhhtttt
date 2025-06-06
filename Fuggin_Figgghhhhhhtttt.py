@@ -26,7 +26,6 @@ DEFAULT_ROLL_STRENGTH = 10
 DEFAULT_STRENGTH_POT = 5
 DEFAULT_HEALING_POT = 4
 
-BASE_ADVENTURE_ROLL = 100
 
 # PLAYER DEFAULTS
 DEFAULT_HEALTH = 75
@@ -106,16 +105,6 @@ def play_animation( Animation ):
         Animation_Temp.release(  )
         cv2.destroyAllWindows(  )
 
-
-def Start_Adventure_Greeting(  ):
-    print( """|
-|        .'(   )\.---.     /`-.      /`-.  )\    /(      .-,.-.,-.    /`-.     /`-.        .-.   )\.---.   .')       )\.---.     /`-.    )\.--.  
-|    ,') \  ) (   ,-._(  ,' _  \   ,' _  \ \ (_.' /      ) ,, ,. (  ,' _  \  ,' _  \   ,'  /  ) (   ,-._( ( /       (   ,-._(  ,' _  \  (   ._.' 
-|   (  /(/ /   \  '-,   (  '-' (  (  '-' (  )  _.'       \( |(  )/ (  '-' ( (  '-' (  (  ) | (   \  '-,    ))        \  '-,   (  '-' (   `-.`.   
-|    )    (     ) ,-`    )   _  )  ) ,_ .'  / /             ) \     ) ,_ .'  )   _  )  ) './ /    ) ,-`    )'._.-.    ) ,-`    ) ,_ .'  ,_ (  \  
-|   (  .'\ \   (  ``-.  (  ,' ) \ (  ' ) \ (  \             \ (    (  ' ) \ (  ,' ) \ (  ,  (    (  ``-.  (       )  (  ``-.  (  ' ) \ (  '.)  ) 
-|    )/   )/    )..-.(   )/    )/  )/   )/  ).'              )/     )/   )/  )/    )/  )/..'      )..-.(   )/,__.'    )..-.(   )/   )/  '._,_.'  
-|    """)
 
 def Fuggin_Figgghhhhhhtttt(  ):
     print( """|
@@ -205,16 +194,6 @@ def Clean_Message_Long( Message ):
     print( "|\t|\t"+ str( Message ) ) 
     print( "|\t|                                                                                              |" )
     print( "|\t\\______________________________________________________________________________________________/" )
-
-def Prompt_User_Adventure_Base( Group_Name ):
-    print( "|\t  ____________________________________________________________________________________________" )
-    print( "|\t /                                                                                            \\ " )
-    print( "|\t|                                                                                              |" )
-    print( "|\t|\t"+ str( Group_Name ) + ", when you are ready, press 'k' to blaze forward, or 'e' to exit?" )
-    print( "|\t|\t", end="" )
-    Choice = input(":" )
-    print( "|\t\\______________________________________________________________________________________________/" )
-    return Choice
 
 def Prompt_User( Player ):
     print( "|\t  ____________________________________________________________________________________________" )
@@ -862,51 +841,6 @@ def Elder_Event( Players, Group_Name ):
     pass
 
 
-def Adventure_Roll( Players, Group_Name ):
-    # Game Continued
-    print( roll( BASE_ADVENTURE_ROLL ) )
-    ADV_ROLL = roll( BASE_ADVENTURE_ROLL )
-
-    if 1 <= ADV_ROLL <= 45: # 45
-        print(" !!! Monster_Event !!! ")
-        Monster_Event( Players, Group_Name )
-
-    elif  46<= ADV_ROLL <= 70: # 35
-        Clean_Message( "Walking timid... another length traveled and nothing seen" )
-
-    elif 71 <= ADV_ROLL <= 99: # 29
-        Room_Event( Players, Group_Name )
-
-    elif ADV_ROLL == 100: # 1
-        print(" !!! Elder Event !!! ")
-        Elder_Event( Players, Group_Name )
-
-    else:
-        print("ADV_ROLL is not in any of the specified ranges")
-
-
-
-def Player_Choice_Adventure( Group_Name, Players ):
-    while( True ):
-        print(f"|")
-        player_choice = Prompt_User_Adventure_Base( Group_Name )
-        print(f"|")
-        print( "|\n|" )
-        if player_choice == "exit" or player_choice == "e":
-            #Player.attack( Target )
-
-            Clean_Message( " Ya know... im not suprised that the " + str( Group_Name ) + " have exited.. makes sense" )
-            return False
-        elif player_choice == "keep" or player_choice == "k":
-            
-            Clean_Message( "Once again into the breach! On the " + str( Group_Name )+ " ford." )
-
-            Adventure_Roll( Players, Group_Name )
-            return True
-        else:
-            # if player 1 makes an invalid choice, Try again
-            print("| Invalid choice. Try again.")
-
 def Player_Choice( Player, Target ):
     Prayer_Toggle = False
     while( True ):
@@ -1123,45 +1057,6 @@ def check_integer(x):
     else:
         return False
 
-def Run_Adventure( Players, Group_Name ):
-    Round_Count = 1
-    Top_Cap(  )
-
-    Start_Adventure_Greeting(  )
-
-    round_stats( " PRE GAME LOBBY " )
-    battle_stats( Players, "" )
-
-    Clean_Message( "Greetings!!! Enjoy your time in safety, the road ahead is painful and dark." )
-    Clean_Message( "You'll see things sthat will make your stomach turn well into old age." )
-    Clean_Message( "If you survive that long... Anyways... have a it... I wish you bad luck" )
-
-
-    Choice = True
-    while( len( Players ) != 0 and Choice ):
-        round_stats( Round_Count )
-        battle_stats( Players, "" )
-        Choice = Player_Choice_Adventure( Group_Name, Players )
-
-        # Roll 
-        #Monster = spawn_creature(  )
-        #Monster_Name = "BatMonkey"
-        #creature_class = globals(  ).get( Monster )( Players ) # Spawn the Monster
-
-        #print( "\tSpawn a:\t" + str( creature_class.name ) )
-
-        #print( Adventure_Roll )
-
-        # Narration
-
-        # Event
-
-
-
-        # Narration
-        Round_Count += 1
-    Bottom_Cap()
-
 
 def y_n( message ):
     answer = input( str( message ) + " | y / n:" )
@@ -1172,124 +1067,9 @@ def y_n( message ):
     else:
         return y_n( message )
 
-def Get_Player_Name( Player_Number ):
-    while( True ):
-        print("|")
-        print( "|\tEnter Player " + str( Player_Number ) + "'s Name?" )
-        print("|")
-        Player_Name = input( "| : " )
-        print("|")
-        print( "|\tIs Player " + str( Player_Number ) + "'s Name Correct? \t" + str( Player_Name ) )
-        print("|")
-        while( True ):
-            print("|")
-            Correct = input( "| y / n: " )
-            print("|")
-            if( Correct == "y" ):
-                return Player_Name
-            elif( Correct == "n" ):
-                break
-            else:
-                print("|")
-                print( "|\t!!!Invalid entrheal_emotey, try again... !!!" )
-                print("|")
 
-def Spawn_Player( Player_Name ):
-    DEF_ADV_MAX_HEAL = 8
-    DEF_ADV_MAX_HIT = 10
-    DEF_ADV_HEALTH = DEFAULT_HEALTH
-    return Player( str( Player_Name ), DEF_ADV_HEALTH, DEF_ADV_MAX_HIT, DEF_ADV_MAX_HEAL)
-
-def Adventure(  ):
-    Players = []
-    
-    Run_Adventure( [ Spawn_Player("Cole"), Spawn_Player("Sam"), Spawn_Player("Sean") ], "RatPackBoiz" )
-    return
-
-    print("|")
-    print( "|\tHow many player will there be? ( Max: 3 )" )
-    print("|")
-    while( True ):
-        Player_Count = input( "| :" )
-        if( int( Player_Count ) == 1 ):
-            Players.append(Spawn_Player(Get_Player_Name( 1 )))
-
-            Run_Adventure( Players )
-
-            break
-        elif( int( Player_Count ) == 2 ):
-            Players.append(Spawn_Player(Get_Player_Name( 1 )))
-            Players.append(Spawn_Player(Get_Player_Name( 2 )))
-            
-            Run_Adventure( Players )
-            
-            break
-        elif( int( Player_Count ) == 3 ):
-            Players.append(Spawn_Player(Get_Player_Name( 1 )))
-            Players.append(Spawn_Player(Get_Player_Name( 2 )))
-            Players.append(Spawn_Player(Get_Player_Name( 3 )))
-            
-            Run_Adventure( Players )
-
-            break
-            
-
-    print( "  ______________________________________________" )
-    print( " /                                              \\ " )
-    print( "|                                               |" )
-    print( "|       Still need to make this....             |") 
-    print( "|                                               |" )
-    print( "\\_______________________________________________/" )
-    print(  )
-    print(  )
-
-def Main_Menu(  ):
-
-    print( "  ______________________________________________" )
-    print( " /                                              \\ " )
-    err_cnt = 0
-    while( True ):
-        print( "|                                               |" )
-        print( "|  Hey Feller! Where would you like to go...    |" )
-        print( "|                                               |" )
-        print( "|      f = fight                                |" )
-        print( "|      e = exit                                 |" )
-        print( "|                                               |" )
-    #    print( "    s = settings" ) # Edits a JSON FILE
-        Game = input( "| :" )
-        if( Game == "f" ):
-
-            print( "\\_______________________________________________/" )
-            print(  )
-            print(  ) 
-            Figgghhhhhttt( "", 0 )        
-            print( "  ______________________________________________" )
-            print( " /                                              \\ " )
-        elif( Game == "e" ):
-            break  
-        else:
-            err_cnt += 1
-            print( "|                                               |" )
-            print( "|   ____________________________________        |" )
-            print( "|  /                                    \       |" )
-            if( err_cnt == 1 ):
-                print( "| | !!! That wasn't on the list...  !!! |       |")
-                print( "| | !!! That wasn't on the list...  !!! |       |")
-                print( "| | !!! Please try again...         !!! |       |" )
-                
-            elif( err_cnt == 2 ):
-                print( "| | !!! It's only like 2 things...  !!! |       |")
-                print( "| | !!! It's not very hard...       !!! |       |" )
-                print( "| | !!! Try again...                !!! |       |" )
-            elif( err_cnt == 3 ):
-                print( "| | !!! ...                         !!! |       |" )
-            elif( err_cnt == 4 ):
-                print( "| | !!! Ohh F*** You...  exit()     !!! |       |" )
-                print( "|  \\____________________________________/       |" )
-                break
-            print( "|  \\___________________________________/        |" )
-            print( "|                                               |" )
-    print( "\\_______________________________________________/" )
-    
-Main_Menu(  )
  
+
+if __name__ == "__main__":
+    Figgghhhhhttt("", 0)
+
