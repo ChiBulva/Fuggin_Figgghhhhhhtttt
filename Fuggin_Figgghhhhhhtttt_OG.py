@@ -13,6 +13,9 @@ def roll( sides ):
 import sys
 import cv2
 
+Animation_Mode = False
+if( "-a" in sys.argv ):
+    Animation_Mode = True
 Descriptions_Mode = False
 if( "-d" in sys.argv ):
     Descriptions_Mode = True
@@ -40,9 +43,79 @@ x5	7	12	17	22	27	32	37
 x4	11	15	19	23	27	31	35
 """
 
+# Load the video
+Waft_Success = './video/Waft_Success.mp4'
+Failed_Waft = './video/Failed_Waft.mp4'
+New_Champ = './video/New_Champ.mp4'
+Old_Champ = './video/Old_Champ.mp4'
+Prayer = './video/Prayer.mp4'
+Healing_Potion = './video/Healing_Potion.mp4'
+Strength_Potion = './video/Strength_Potion.mp4'
+Heal = './video/Heal.mp4'
+Damage_1 = './video/Damage/1.mp4'
+Damage_2 = './video/Damage/2.mp4'
+Damage_3 = './video/Damage/3.mp4'
+Damage_4 = './video/Damage/4.mp4'
+Damage_5 = './video/Damage/5.mp4'
+Damage = './video/Damage.mp4'
+Damage_6 = './video/Damage/6.mp4'
+Damage_7 = './video/Damage/7.mp4'
+Damage_8 = './video/Damage/8.mp4'
+Damage_9 = './video/Damage/9.mp4'
+Damage_10 = './video/Damage/10.mp4'
+
+Heal_1 = './video/Heal/1.mp4'
+Heal_2 = './video/Heal/2.mp4'
+Heal_3 = './video/Heal/3.mp4'
+Heal_4 = './video/Heal/4.mp4'
+Heal_5 = './video/Heal/5.mp4'
+Heal_6 = './video/Heal/6.mp4'
+Heal_7 = './video/Heal/7.mp4'
+Heal_8 = './video/Heal/8.mp4'
+Heal_9 = './video/Heal/9.mp4'
+Heal_10 = './video/Damage/10.mp4'
+
+Clown = './video/Clown.mp4'
+Taunt = './video/Taunt.mp4'
+
 def Roll_Strength( current_roll, sides ):
     roll_strength = ( DEFAULT_ROLL_STRENGTH * current_roll ) / sides
     return roll_strength
+
+def play_animation( Animation ):
+    #if( Animation_Mode ):
+    if( Animation_Mode or Animation == Waft_Success or Animation == Failed_Waft ): # Silly edit
+
+        Animation_Temp = cv2.VideoCapture( Animation )
+        # Loop through each frame of the video
+        while True:
+            # Read the next frame from the video
+            success, frame = Animation_Temp.read()
+
+            # If there are no more frames left, break the loop
+            if not success:
+                break
+
+            # Show the frame
+            cv2.imshow('Video', frame)
+
+            # Wait for a key press
+            key = cv2.waitKey(30)
+            if key == 27:  # Esc key
+                break
+        Animation_Temp.release(  )
+        cv2.destroyAllWindows(  )
+
+
+def Start_Adventure_Greeting(  ):
+    print( """|
+|        .'(   )\.---.     /`-.      /`-.  )\    /(      .-,.-.,-.    /`-.     /`-.        .-.   )\.---.   .')       )\.---.     /`-.    )\.--.  
+|    ,') \  ) (   ,-._(  ,' _  \   ,' _  \ \ (_.' /      ) ,, ,. (  ,' _  \  ,' _  \   ,'  /  ) (   ,-._( ( /       (   ,-._(  ,' _  \  (   ._.' 
+|   (  /(/ /   \  '-,   (  '-' (  (  '-' (  )  _.'       \( |(  )/ (  '-' ( (  '-' (  (  ) | (   \  '-,    ))        \  '-,   (  '-' (   `-.`.   
+|    )    (     ) ,-`    )   _  )  ) ,_ .'  / /             ) \     ) ,_ .'  )   _  )  ) './ /    ) ,-`    )'._.-.    ) ,-`    ) ,_ .'  ,_ (  \  
+|   (  .'\ \   (  ``-.  (  ,' ) \ (  ' ) \ (  \             \ (    (  ' ) \ (  ,' ) \ (  ,  (    (  ``-.  (       )  (  ``-.  (  ' ) \ (  '.)  ) 
+|    )/   )/    )..-.(   )/    )/  )/   )/  ).'              )/     )/   )/  )/    )/  )/..'      )..-.(   )/,__.'    )..-.(   )/   )/  '._,_.'  
+|    """)
 
 def Fuggin_Figgghhhhhhtttt(  ):
     print( """|
@@ -61,9 +134,11 @@ def Fuggin_Figgghhhhhhtttt(  ):
 |""")
 
 def taunt_emote(  ):
+    play_animation( Taunt )
     print( "|                      /´¯/)\n|                    ,/¯  /\n|                   /    /\n|             /´¯/'   '/´¯¯`·¸\n|          /'/   /    /       /¨¯\\\n|        ('(   ´   ´     ¯~/'   ')\n|         \\                 '     /\n|          ''   \\           _ ·´\n|            \\              ( \n|              \\             \\   " )
 
 def clown_emote(  ):
+    play_animation( Clown )
     print( """|
 |                   >>>>>\\|/<<<<<
 |                  >>>\\\\\\\\v////<<<
@@ -80,6 +155,7 @@ def clown_emote(  ):
 |    """ )
 
 def prayer_emote(  ):
+    play_animation( Prayer )
     #print("        ________        \n     _|--      --|_     \n   _|-_||_        -|_   \n  |- -  _-    _---- -|  \n |-    |||    _|_    -| \n |      -     -|-     | \n |                    | \n |  ||_  ----__       | \n -| | |   _____      |- \n  -|- ---- ___-    _|-  \n   |      -|     _|-    \n   |_     -|___|--      \n    -------             \n" )
     print( """|
 |      P  PP PP P
@@ -107,6 +183,7 @@ def look_emote(  ):
     print( "|              _ \n|         .-'    `-.\n|       .'           `.\n|     ;               ;`\\\n|     ;               ; |\n|      \\.           .' /\n|        `-._____.-_.'\n|         / /`/\n|        / / /\n|       / / /\n|       \\/_/\n|")
 
 def waft_emote(  ):
+    play_animation( Waft_Success )
     waft = "|  _\n| | Y~.         --_-_-_-_---\n| | r.|              -_-_-_\n|  Y ||   _            -_-_-\n|  | t_\_/ _)           -__-\n|   \  `. /             _-_\n|     `-._/)          _-\n|        (,db          -_\n|          Yb.        _-_\n| "
     print(waft)
 
@@ -128,6 +205,16 @@ def Clean_Message_Long( Message ):
     print( "|\t|\t"+ str( Message ) ) 
     print( "|\t|                                                                                              |" )
     print( "|\t\\______________________________________________________________________________________________/" )
+
+def Prompt_User_Adventure_Base( Group_Name ):
+    print( "|\t  ____________________________________________________________________________________________" )
+    print( "|\t /                                                                                            \\ " )
+    print( "|\t|                                                                                              |" )
+    print( "|\t|\t"+ str( Group_Name ) + ", when you are ready, press 'k' to blaze forward, or 'e' to exit?" )
+    print( "|\t|\t", end="" )
+    Choice = input(":" )
+    print( "|\t\\______________________________________________________________________________________________/" )
+    return Choice
 
 def Prompt_User( Player ):
     print( "|\t  ____________________________________________________________________________________________" )
@@ -167,8 +254,31 @@ def attack_emote( name, op_name, Roll_Strength, temp_roll ):
 |\t\t\t\t\t\t\t\t\t{op_name} 
 |\t    """)
 
+    #Roll_Strength = 20 # Remove with more animations
+    if( int( Roll_Strength ) == 1 ):
+        play_animation( Damage_1 )
+    elif( int( Roll_Strength ) == 2 ):
+        play_animation( Damage_2 )
+    elif( int( Roll_Strength ) == 3 ):
+        play_animation( Damage_3 )
+    elif( int( Roll_Strength ) == 4 ):
+        play_animation( Damage_4 )
+    elif( int( Roll_Strength ) == 5 ):
+        play_animation( Damage_5 )
+    elif( int( Roll_Strength ) == 6 ):
+        play_animation( Damage_6 )
+    elif( int( Roll_Strength ) == 7 ):
+        play_animation( Damage_7 )
+    elif( int( Roll_Strength ) == 8 ):
+        play_animation( Damage_8 )
+    elif( int( Roll_Strength ) == 9 ):
+        play_animation( Damage_9 )
+    elif( int( Roll_Strength ) == 10 ):
+        play_animation( Damage_10 )
+
 def strength_potion_emote():
     Clean_Message( "Strength_Potion" )
+    play_animation( Strength_Potion )
     print( f"""|
 |\t       _/  `.  :                          
 |\t    .-' `-.     `+._._                    
@@ -191,6 +301,7 @@ def strength_potion_emote():
 
 def health_potion_emote(  ):
     
+    play_animation( Healing_Potion )
     
     print( f"""|
 |\t
@@ -237,7 +348,29 @@ def super_health_potion_emote(  ):
 |   """ )
     
 def heal_emote( Roll_Strength ):
-   
+    if( int( Roll_Strength ) == 1 ):
+        play_animation( Heal_1 )
+    elif( int( Roll_Strength ) == 2 ):
+        play_animation( Heal_2 )
+    elif( int( Roll_Strength ) == 3 ):
+        play_animation( Heal_3 )
+    elif( int( Roll_Strength ) == 4 ):
+        play_animation( Heal_4 )
+    elif( int( Roll_Strength ) == 5 ):
+        play_animation( Heal_5 )
+    elif( int( Roll_Strength ) == 6 ):
+        play_animation( Heal_6 )
+    elif( int( Roll_Strength ) == 7 ):
+        play_animation( Heal_7 )
+    elif( int( Roll_Strength ) == 8 ):
+        play_animation( Heal_8 )
+    elif( int( Roll_Strength ) == 9 ):
+        play_animation( Heal_9 )
+    elif( int( Roll_Strength ) == 10 ):
+        play_animation( Heal_10 )
+    else:
+        play_animation( Heal )
+    
     print( """|
 |\t          |  \ \ | |/ /
 |\t          |  |\ `' ' /
@@ -361,6 +494,92 @@ def Is_Empty_Stat( PLAYER_STATS ):
     except:
         return False
 
+def battle_stats( Creatures, active ):
+    stats = [  ]
+    b_top( Creatures )
+    for stat in live_stats:
+        #print( stat.lower().replace( " ", "_" ) )
+        PLAYER_STATS = fetch_stat( Creatures, stat.lower().replace( " ", "_" ) )
+        if( Is_Empty_Stat( PLAYER_STATS ) ):
+            pass
+        else:
+            stats.append( { "value": PLAYER_STATS , "stat": stat.lower().replace( " ", "_" ) } )
+
+    """
+    name = [str( Creature.name ) for Creature in Creatures]
+    health = [str( Creature.health ) for Creature in Creatures]
+    max_hit = [str( Creature.max_hit ) for Creature in Creatures]
+    max_heal = [str( Creature.max_heal ) for Creature in Creatures]
+    prayer_int = [int( Creature.prayer ) for Creature in Creatures]
+    prayer = [str( Creature.prayer ) for Creature in Creatures]
+    wins = [str( Creature.wins ) for Creature in Creatures]
+    wins_int = [int( Creature.wins ) for Creature in Creatures]
+        
+
+    """
+    for stat in stats:
+        #print( stat )
+        print_stat( stat )
+    """
+    print("|\t| Name     :\t\t" + "\t|\t| > Name     :\t\t".join( name ) + "\t|")
+    print("|\t| Health   :\t\t" + "\t|\t| > Health   :\t\t".join( health ) + "\t|")
+    print("|\t| Max_Hit  :\t\t" + "\t|\t| > Max_Hit  :\t\t".join( max_hit ) + "\t|")
+    print("|\t| Max_Heal :\t\t" + "\t|\t| > Max_Heal :\t\t".join( max_heal ) + "\t|")
+    if( sum( prayer_int ) > 0 ):
+        print("|\t| Prayer   :\t\t" + "\t|\t| > Prayer   :\t\t".join( prayer ) + "\t|")
+    if( sum( wins_int ) > 0 ):
+        print("|\t| Wins     :\t\t" + "\t|\t| > Wins     :\t\t".join( wins ) + "\t|")
+    """
+    b_bot( Creatures )
+
+""" PRINTING ABOVE """
+class Creature:
+    def __init__(self, name, health, max_hit, max_heal, species, noise):
+        self.name = name
+        self.health = health
+        self.max_hit = max_hit
+        self.max_heal = max_heal
+        self.noise = noise
+        self.species = species
+        self.stun = 0
+    
+    def attack(self, other_creature):
+        print( "BM Attack" )
+        print( self.max_hit )
+        # subtract the max_hit of the attacking player from the health of the other player
+        temp_roll = roll( self.max_hit )
+        print( "BM Attack 2" )
+        roll_strength = Roll_Strength( temp_roll, self.max_hit )
+        print( "BM Attack 3" )
+        other_creature.health -= temp_roll
+        print( "BM Attack 4" )
+        Clean_Message(f"{self.name} attacks {other_creature.name} and deals {temp_roll} damage")
+        attack_emote( self.name, other_creature.name, roll_strength, temp_roll )
+        print( other_creature.health )
+        if( other_creature.health <= 0 ):
+            return "dead"
+        else:
+            return "not dead"
+
+    def make_noise(self):
+        Clean_Message(f"{ self.name } the { self.species }:\t{self.noise}")
+
+    def greet(self, message):
+        Clean_Message(f"{message}, I am { self.name } and I am a { self.species }")
+
+
+Monsters = [ "Dragon", "BatMonkey", "Troll", "Deer" ]
+
+def spawn_creature( Players ):
+    index = random.randint(0, len( Monsters ) - 1)
+    print( "Overriding BatMonkey spawn" )
+    index = 1
+    
+    Monster_Name = Monsters[ index ]
+    Baby_Monst = globals(  ).get( Monster_Name )( Players ) # Spawn the Monster    
+
+    return Baby_Monst
+
 def Get_Players_Lowest_Health( Players ):
     LH = 10000000
     for Player in Players:
@@ -388,6 +607,107 @@ def Inc_Turn( Turn, Num_Players ):
     if( Turn >= Num_Players ):
         return 0
     return Turn
+
+# ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - 
+# Creature area
+
+class BatMonkey( Creature ):
+    def __init__( self, Players ):
+        super().__init__("BatMonk", 10, 2, 0, "BatMonkey", "Ooooo Ahhhh ( In Sonar tho )")
+        Clean_Message( "Ohh shit what is that.. looks like a F***in BATMONKEY!!!" )
+        Clean_Message( "The sight of the BatMonkey makes " + str( Players[ roll( len( Players ) ) - 1 ].name ) + " tremble in fear. How weak." )
+
+        
+        MS = Get_Players_Max_Hit( Players )
+        print( "Players Max Hit:\t" + str( MS ) )
+        self.health = round( MS * 0.66 )  # Will set to 
+        print( "BM Health:\t" + str( self.health ) )
+        
+        LH = Get_Players_Lowest_Health( Players )
+        #print( "Players Lowest Health:\t" + str( LH ) )
+        self.max_hit = round( LH * 0.1 )  # Will set to 
+        if( self.max_hit < 5 ):
+            self.max_hit = 5
+        print( "BM Max hit:\t" + str( self.max_hit ) )
+
+        self.hit_chance = 1
+
+    def get_wild( self ):
+        if( self.hit_chance >= 8 ):
+            Clean_Message( "It'll be hard to hit this thing!!" )
+        else:
+            self.hit_chance += self.hit_chance * 2
+            self.max_hit += self.max_hit + 2
+            if( self.hit_chance >= 8 ):
+                Clean_Message( "The BatMonkey has become wild" )
+
+    def event( self, Players, Group_Name ):
+
+        Num_Players = len( Players )
+
+        round_stats( "Monster: " +str( self.name ) )
+        battle_stats( Players, "" )
+        battle_stats( [self], "" )
+		
+        Turn = roll( Num_Players ) - 1
+
+        Clean_Message( "The BatMonkey attacks " + str( Players[ Turn ] ) )
+        for attack_hit in range( 3 ):
+            
+            #try:
+            attack_result = self.attack( Players[ Turn ] )
+            Clean_Message( "Attack_result:" + str( attack_result ) )
+            if( attack_result == "dead" ):
+                Clean_Message( str( Players[ Turn ].name ) + " was killed befor the fight.. sad"  )
+                break
+
+            #except:
+            #    pass
+
+        # remove player from the game here
+
+        while( self.health <= 0  ):
+            Players = Purge_Dead( Players )
+            Num_Players = len( Players )
+
+            Turn = Inc_Turn( Turn, Num_Players )
+            Clean_Message( "It is " + str( Players[ Turn ].name ) + "'s turn..." )
+
+            Turn = Inc_Turn( Turn, Num_Players )
+
+
+            self.health -= 5 
+
+        Clean_Message( "The BatMonkey was defeated. The " + str( Group_Name ) + " continue their blaze" )
+
+        round_stats( "Monster: " +str( self.name ) )
+
+class Troll(Creature):
+  def __init__(self, name, prey):
+    super().__init__(name, 40, 10, 0, "Troll", "Rooaaarrrr")
+    self.prey = prey
+
+  def hunt(self):
+    Clean_Message(f"{self.name} the { self.species } is hunting {self.prey.name}.")
+    if( self.prey.health <= 0 ):
+        Clean_Message(f"{self.prey.name} has already been killed!!!")
+    else:
+        if( roll( 2 ) % 2 == 0 ):
+            pass
+            #self.prey.runs(  )
+        else:
+            self.attack( self.prey )
+            if( self.prey.health <= 0 ):
+                Clean_Message(f"{self.name} the { self.species } killedd {self.prey.name}.")
+
+class Deer(Creature):
+  def __init__(self, name):
+    super().__init__( name, 10, 0, 0, "Deer", "Aaaahhhhhh")
+
+  def runs(self):
+    Clean_Message(f"{ self.name } the { self.species } is running fast away")
+# End Creature Area
+# ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - 
 
 def Purge_Dead( Players ):
     for player in Players:
@@ -432,7 +752,7 @@ class Player:
         temp_roll = roll( self.max_heal )
         roll_strength = Roll_Strength( temp_roll, self.max_heal )
         self.health += temp_roll
-        # heal_emote( roll_strength )
+        heal_emote( roll_strength )
         Clean_Message( f"{self.name} heals for {temp_roll} health points" )
 
     def buff_max_health(self, buff):
@@ -455,6 +775,7 @@ class Player:
             waft_emote(  )
             Clean_Message(f"Success!!! {Target.name} is stunned for { Target.stun } turns")
         else:
+            play_animation( Failed_Waft )
             Clean_Message(f"Wafting sand {self.name}? You're a FREAK!!!")
 
     def add_stun( self, stun ):
@@ -512,45 +833,79 @@ class Player:
             Clean_Message( f" Looking for what?! {self.name}... You're the worst!!!" )
             # Found Nothing
 
+def Battle( Monster, Players ):
+    #print( Players.append( Monster ) )
+    battle_stats( Players, "" )
+    battle_stats( [ Monster ], "" )
 
-def battle_stats( Creatures, active ):
-    stats = [  ]
-    b_top( Creatures )
-    for stat in live_stats:
-        #print( stat.lower().replace( " ", "_" ) )
-        PLAYER_STATS = fetch_stat( Creatures, stat.lower().replace( " ", "_" ) )
-        if( Is_Empty_Stat( PLAYER_STATS ) ):
-            pass
+    pass
+
+def Monster_Event( Players, Group_Name ):
+
+    Current_Monster = spawn_creature( Players )
+    #battle_stats([ Current_Monster ], "")  
+    Current_Monster.event( Players, Group_Name )
+    # Roll 
+    #Monster = spawn_creature(  )
+    #Monster_Name = "BatMonkey"
+    #creature_class = globals(  ).get( Monster )( Players ) # Spawn the Monster
+    pass
+    return
+
+def Room_Event( Players, Group_Name ):
+    Clean_Message( "Still need to Build Room Events" )
+    pass
+
+def Elder_Event( Players, Group_Name ): 
+    Clean_Message( "Holy Fuck the elder event... " )
+    Clean_Message( "It's gonna be insane... when I get to building it..." )
+    pass
+
+
+def Adventure_Roll( Players, Group_Name ):
+    # Game Continued
+    print( roll( BASE_ADVENTURE_ROLL ) )
+    ADV_ROLL = roll( BASE_ADVENTURE_ROLL )
+
+    if 1 <= ADV_ROLL <= 45: # 45
+        print(" !!! Monster_Event !!! ")
+        Monster_Event( Players, Group_Name )
+
+    elif  46<= ADV_ROLL <= 70: # 35
+        Clean_Message( "Walking timid... another length traveled and nothing seen" )
+
+    elif 71 <= ADV_ROLL <= 99: # 29
+        Room_Event( Players, Group_Name )
+
+    elif ADV_ROLL == 100: # 1
+        print(" !!! Elder Event !!! ")
+        Elder_Event( Players, Group_Name )
+
+    else:
+        print("ADV_ROLL is not in any of the specified ranges")
+
+
+
+def Player_Choice_Adventure( Group_Name, Players ):
+    while( True ):
+        print(f"|")
+        player_choice = Prompt_User_Adventure_Base( Group_Name )
+        print(f"|")
+        print( "|\n|" )
+        if player_choice == "exit" or player_choice == "e":
+            #Player.attack( Target )
+
+            Clean_Message( " Ya know... im not suprised that the " + str( Group_Name ) + " have exited.. makes sense" )
+            return False
+        elif player_choice == "keep" or player_choice == "k":
+            
+            Clean_Message( "Once again into the breach! On the " + str( Group_Name )+ " ford." )
+
+            Adventure_Roll( Players, Group_Name )
+            return True
         else:
-            stats.append( { "value": PLAYER_STATS , "stat": stat.lower().replace( " ", "_" ) } )
-
-    """
-    name = [str( Creature.name ) for Creature in Creatures]
-    health = [str( Creature.health ) for Creature in Creatures]
-    max_hit = [str( Creature.max_hit ) for Creature in Creatures]
-    max_heal = [str( Creature.max_heal ) for Creature in Creatures]
-    prayer_int = [int( Creature.prayer ) for Creature in Creatures]
-    prayer = [str( Creature.prayer ) for Creature in Creatures]
-    wins = [str( Creature.wins ) for Creature in Creatures]
-    wins_int = [int( Creature.wins ) for Creature in Creatures]
-        
-
-    """
-    for stat in stats:
-        #print( stat )
-        print_stat( stat )
-    """
-    print("|\t| Name     :\t\t" + "\t|\t| > Name     :\t\t".join( name ) + "\t|")
-    print("|\t| Health   :\t\t" + "\t|\t| > Health   :\t\t".join( health ) + "\t|")
-    print("|\t| Max_Hit  :\t\t" + "\t|\t| > Max_Hit  :\t\t".join( max_hit ) + "\t|")
-    print("|\t| Max_Heal :\t\t" + "\t|\t| > Max_Heal :\t\t".join( max_heal ) + "\t|")
-    if( sum( prayer_int ) > 0 ):
-        print("|\t| Prayer   :\t\t" + "\t|\t| > Prayer   :\t\t".join( prayer ) + "\t|")
-    if( sum( wins_int ) > 0 ):
-        print("|\t| Wins     :\t\t" + "\t|\t| > Wins     :\t\t".join( wins ) + "\t|")
-    """
-    b_bot( Creatures )
-
+            # if player 1 makes an invalid choice, Try again
+            print("| Invalid choice. Try again.")
 
 def Player_Choice( Player, Target ):
     Prayer_Toggle = False
@@ -768,6 +1123,46 @@ def check_integer(x):
     else:
         return False
 
+def Run_Adventure( Players, Group_Name ):
+    Round_Count = 1
+    Top_Cap(  )
+
+    Start_Adventure_Greeting(  )
+
+    round_stats( " PRE GAME LOBBY " )
+    battle_stats( Players, "" )
+
+    Clean_Message( "Greetings!!! Enjoy your time in safety, the road ahead is painful and dark." )
+    Clean_Message( "You'll see things sthat will make your stomach turn well into old age." )
+    Clean_Message( "If you survive that long... Anyways... have a it... I wish you bad luck" )
+
+
+    Choice = True
+    while( len( Players ) != 0 and Choice ):
+        round_stats( Round_Count )
+        battle_stats( Players, "" )
+        Choice = Player_Choice_Adventure( Group_Name, Players )
+
+        # Roll 
+        #Monster = spawn_creature(  )
+        #Monster_Name = "BatMonkey"
+        #creature_class = globals(  ).get( Monster )( Players ) # Spawn the Monster
+
+        #print( "\tSpawn a:\t" + str( creature_class.name ) )
+
+        #print( Adventure_Roll )
+
+        # Narration
+
+        # Event
+
+
+
+        # Narration
+        Round_Count += 1
+    Bottom_Cap()
+
+
 def y_n( message ):
     answer = input( str( message ) + " | y / n:" )
     if( answer == "y" ):
@@ -857,12 +1252,21 @@ def Main_Menu(  ):
         print( "|                                               |" )
         print( "|  Hey Feller! Where would you like to go...    |" )
         print( "|                                               |" )
+        print( "|      a = adventure                            |" )
         print( "|      f = fight                                |" )
         print( "|      e = exit                                 |" )
         print( "|                                               |" )
     #    print( "    s = settings" ) # Edits a JSON FILE
         Game = input( "| :" )
-        if( Game == "f" ):
+        if( Game == "a" ):
+
+            print( "\\_______________________________________________/" )
+            print(  )
+            print(  )
+            Adventure(  )
+            print( "  ______________________________________________" )
+            print( " /                                              \\ " )
+        elif( Game == "f" ):
 
             print( "\\_______________________________________________/" )
             print(  )
